@@ -6,6 +6,8 @@ public class TrainConsistManagementApp {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
+
+        // Dynamic list for bogies
         ArrayList<String> train = new ArrayList<>();
 
         System.out.println("=== Train Consist Management App ===");
@@ -25,28 +27,46 @@ public class TrainConsistManagementApp {
             sc.nextLine(); // clear buffer
 
             switch (choice) {
+
                 case 1:
                     System.out.print("Enter bogie name: ");
-                    String b = sc.nextLine();
-                    train.add(b);
+                    String bogie = sc.nextLine();
+                    train.add(bogie);
+                    System.out.println("Bogie added successfully.");
                     break;
 
                 case 2:
-                    System.out.print("Enter bogie to remove: ");
-                    String r = sc.nextLine();
-                    train.remove(r);
+                    if (train.isEmpty()) {
+                        System.out.println("Train is empty.");
+                    } else {
+                        System.out.print("Enter bogie to remove: ");
+                        String remove = sc.nextLine();
+
+                        if (train.remove(remove)) {
+                            System.out.println("Bogie removed successfully.");
+                        } else {
+                            System.out.println("Bogie not found.");
+                        }
+                    }
                     break;
 
                 case 3:
-                    System.out.println("Train: " + train);
+                    if (train.isEmpty()) {
+                        System.out.println("Train is empty.");
+                    } else {
+                        System.out.println("Current Train Consist:");
+                        for (String b : train) {
+                            System.out.println("- " + b);
+                        }
+                    }
                     break;
 
                 case 4:
-                    System.out.println("Exiting...");
+                    System.out.println("Exiting program...");
                     break;
 
                 default:
-                    System.out.println("Invalid choice");
+                    System.out.println("Invalid choice.");
             }
 
         } while (choice != 4);
