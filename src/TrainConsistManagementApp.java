@@ -3,50 +3,59 @@ import java.util.stream.*;
 
 // Bogie class
 class Bogie {
-    String type;
-    String cargo;
+    String name;
+    int capacity;
 
-    Bogie(String type, String cargo) {
-        this.type = type;
-        this.cargo = cargo;
+    Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
     }
-}
-
-// Functional Interface
-interface SafetyCheck {
-    boolean check(Bogie b);
 }
 
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
 
-        System.out.println("=== UST - Safety Compliance Check for Goods Bogies ===\n");
+        System.out.println("=== UST - Performance Comparison: Loops vs Streams ===\n");
 
         // Create list of bogies
         List<Bogie> bogies = new ArrayList<>();
 
-        bogies.add(new Bogie("Cylindrical", "Petroleum"));
-        bogies.add(new Bogie("Box", "Grain"));
-        bogies.add(new Bogie("Open", "Coal"));
-        bogies.add(new Bogie("Cylindrical", "Petroleum"));
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 56));
+        bogies.add(new Bogie("First Class", 30));
+        bogies.add(new Bogie("Sleeper", 80));
+        bogies.add(new Bogie("General", 90));
 
-        // Display bogies
-        System.out.println("Goods Bogies in Train:");
+        // -------- LOOP APPROACH --------
+        long startLoop = System.nanoTime();
+
+        List<Bogie> loopResult = new ArrayList<>();
         for (Bogie b : bogies) {
-            System.out.println(b.type + " -> " + b.cargo);
+            if (b.capacity > 60) {
+                loopResult.add(b);
+            }
         }
 
-        // Lambda safety rule:
-        // Cylindrical bogies must carry only Petroleum
-        SafetyCheck rule = b ->
-                !b.type.equals("Cylindrical") || b.cargo.equals("Petroleum");
+        long endLoop = System.nanoTime();
+        long loopTime = endLoop - startLoop;
 
-        // Apply rule using allMatch()
-        boolean isSafe = bogies.stream().allMatch(b -> rule.check(b));
+        // -------- STREAM APPROACH --------
+        long startStream = System.nanoTime();
 
-        // Output result
-        System.out.println("\nSafety Compliance Status: " + (isSafe ? "Safe" : "Unsafe"));
+        List<Bogie> streamResult = bogies.stream()
+                .filter(b -> b.capacity > 60)
+                .collect(Collectors.toList());
 
-        System.out.println("\nUC12 safety validation completed...");
+        long endStream = System.nanoTime();
+        long streamTime = endStream - startStream;
+
+        // -------- OUTPUT --------
+        System.out.println("Loop Filtered Count: " + loopResult.size());
+        System.out.println("Stream Filtered Count: " + streamResult.size());
+
+        System.out.println("\nLoop Execution Time (ns): " + loopTime);
+        System.out.println("Stream Execution Time (ns): " + streamTime);
+
+        System.out.println("\nUC13 performance benchmarking completed...");
     }
 }
