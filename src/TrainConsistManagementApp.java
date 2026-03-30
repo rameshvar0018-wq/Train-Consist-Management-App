@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.*;
 
 // Bogie class
 class Bogie {
@@ -11,17 +12,10 @@ class Bogie {
     }
 }
 
-// Comparator to sort by capacity
-class CapacityComparator implements Comparator<Bogie> {
-    public int compare(Bogie b1, Bogie b2) {
-        return Integer.compare(b1.capacity, b2.capacity);
-    }
-}
-
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
 
-        System.out.println("=== UST - Sort Bogies by Capacity (Comparator) ===\n");
+        System.out.println("=== UST - Filter Passenger Bogies Using Stream ===\n");
 
         // Create list of bogies
         List<Bogie> bogies = new ArrayList<>();
@@ -29,20 +23,29 @@ public class TrainConsistManagementApp {
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 56));
         bogies.add(new Bogie("First Class", 30));
+        bogies.add(new Bogie("General", 90));
 
-        // Before sorting
-        System.out.println("Before Sorting:");
+        // Display all bogies
+        System.out.println("All Bogies:");
         for (Bogie b : bogies) {
             System.out.println(b.name + " -> " + b.capacity);
         }
 
-        // Sort using Comparator
-        Collections.sort(bogies, new CapacityComparator());
+        // Filter bogies with capacity > 60
+        List<Bogie> filtered = bogies.stream()
+                .filter(b -> b.capacity > 60)
+                .collect(Collectors.toList());
 
-        // After sorting
-        System.out.println("\nAfter Sorting by Capacity:");
-        for (Bogie b : bogies) {
-            System.out.println(b.name + " -> " + b.capacity);
+        // Display filtered bogies
+        System.out.println("\nFiltered Bogies (capacity > 60):");
+        if (filtered.isEmpty()) {
+            System.out.println("No bogies found.");
+        } else {
+            for (Bogie b : filtered) {
+                System.out.println(b.name + " -> " + b.capacity);
+            }
         }
+
+        System.out.println("\nFiltering completed...");
     }
 }
