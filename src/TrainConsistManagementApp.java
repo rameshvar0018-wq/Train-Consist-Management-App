@@ -1,29 +1,48 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
+// Bogie class
+class Bogie {
+    String name;
+    int capacity;
+
+    Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
+    }
+}
+
+// Comparator to sort by capacity
+class CapacityComparator implements Comparator<Bogie> {
+    public int compare(Bogie b1, Bogie b2) {
+        return Integer.compare(b1.capacity, b2.capacity);
+    }
+}
 
 public class TrainConsistManagementApp {
-
     public static void main(String[] args) {
 
-        System.out.println("UES - Map Bogie to Capacity (HashMap)");
-        System.out.println();
+        System.out.println("=== UST - Sort Bogies by Capacity (Comparator) ===\n");
 
-        // Create HashMap to store bogie-capacity mapping
-        HashMap<String, Integer> bogieCapacity = new HashMap<>();
+        // Create list of bogies
+        List<Bogie> bogies = new ArrayList<>();
 
-        // Insert bogies with capacities
-        bogieCapacity.put("First Class", 40);
-        bogieCapacity.put("Sleeper", 72);
-        bogieCapacity.put("Cargo", 100);
-        bogieCapacity.put("AC Chair", 50);
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 56));
+        bogies.add(new Bogie("First Class", 30));
 
-        // Display bogie capacities
-        System.out.println("Bogie Capacity Details:");
-        for (Map.Entry<String, Integer> entry : bogieCapacity.entrySet()) {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        // Before sorting
+        System.out.println("Before Sorting:");
+        for (Bogie b : bogies) {
+            System.out.println(b.name + " -> " + b.capacity);
         }
 
-        System.out.println();
-        System.out.println("UES bogie-capacity mapping completed...");
+        // Sort using Comparator
+        Collections.sort(bogies, new CapacityComparator());
+
+        // After sorting
+        System.out.println("\nAfter Sorting by Capacity:");
+        for (Bogie b : bogies) {
+            System.out.println(b.name + " -> " + b.capacity);
+        }
     }
 }
